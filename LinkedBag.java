@@ -22,7 +22,6 @@ public class LinkedBag<T> implements BagInterface<T> {
             this.data=data;
             this.next=next; // new element points to head 
             numberofEntries++;
-            firstNode=this; // firstNode is maintained/updated 
         }
         /** Used when you want to create nodes to compare against a node in our linkedbag or if you wanted to add to end of link, other instantiations are to add into a LinkedBag
          * @param data The element that is being stored in the node. */
@@ -55,7 +54,8 @@ public class LinkedBag<T> implements BagInterface<T> {
     /** Checks that the head node had a data field equivalent to the argument that was passed. */
     public boolean add(T newEntry){
         checkIntegrity();
-        Node(newEntry,firstNode); // constructor takes care of adding to first
+        Node<T> entry= Node(newEntry,firstNode); // constructor takes care of adding to first
+        firstNode=entry;
         if (newEntry==firstNode.data)
             return true; 
         else 
