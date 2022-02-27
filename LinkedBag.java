@@ -3,7 +3,7 @@
  */
 public class LinkedBag<T> implements BagInterface<T> { 
     private final LinkedBag<T> baglinked; 
-    private Node<T> firstNode; // addition of tail node
+    private Node<T> firstNode; 
     private int numberofEntries=0;
     private boolean integrityOK=false; 
 
@@ -160,6 +160,7 @@ public class LinkedBag<T> implements BagInterface<T> {
      * @return Returns a new LinkedBag with all elements in either the LinkedBag making the method call or the LinkedBag that gets passed as an argument. 
      */
     // think I can get around the for
+    @Override
     public LinkedBag<T> union(LinkedBag<T> anotherBag) {
         checkIntegrity();
         anotherBag.checkIntegrity();
@@ -177,6 +178,7 @@ public class LinkedBag<T> implements BagInterface<T> {
      * @param anotherBag
      * @return
      */
+    @Override
     public LinkedBag<T> intersection(LinkedBag<T> anotherBag) { 
         checkIntegrity();
         anotherBag.checkIntegrity();
@@ -200,6 +202,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         }
         return intersectionBag;
     }
+    @Override
     public LinkedBag<T> difference(LinkedBag<T> anotherBag){
         checkIntegrity();
         LinkedBag<T> differenceBag = new LinkedBag();
