@@ -36,7 +36,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         }
     }
     /** To ensure a more secure implementation*/
-    public boolean checkIntegrity() { 
+    public void checkIntegrity() { 
         if(!integrityOK)
             throw new SecurityException ("LinkedBag is corrupt") ; 
     }
