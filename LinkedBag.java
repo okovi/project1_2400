@@ -161,7 +161,7 @@ public class LinkedBag<T> implements BagInterface<T> {
      */
     // think I can get around the for
     @Override
-    public LinkedBag<T> union(LinkedBag<T> anotherBag) {
+    public BagInterface<T> union(BagInterface<T> anotherBag) {
         checkIntegrity();
         anotherBag.checkIntegrity();
         LinkedBag<T> unionBag = new LinkedBag();
@@ -179,7 +179,7 @@ public class LinkedBag<T> implements BagInterface<T> {
      * @return
      */
     @Override
-    public LinkedBag<T> intersection(LinkedBag<T> anotherBag) { 
+    public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
         checkIntegrity();
         anotherBag.checkIntegrity();
         LinkedBag<T> duplicateBag = new LinkedBag(); // add duplicate to bag and test against so we can use getFrequency of freely
@@ -203,7 +203,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         return intersectionBag;
     }
     @Override
-    public LinkedBag<T> difference(LinkedBag<T> anotherBag){
+    public BagInterface<T> difference(BagInterface<T> anotherBag){
         checkIntegrity();
         LinkedBag<T> differenceBag = new LinkedBag();
         LinkedBag<T> duplicateBag = new LinkedBag();
