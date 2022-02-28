@@ -1,4 +1,4 @@
-//Author @Jared
+//Author @Jared, with help from @Drake
 //COMMENTS ADDED AFTER COMPLETION OF CODE
 //also realized I needed a way to check integrity for capacity oops
     import java.util.Arrays;
@@ -72,7 +72,8 @@
              public boolean remove(T anEntry){
                  checkIntegrity();
                     T product = null;
-		            if (!isEmpty() && anEntry >= 0) {
+                    int needAnEntry = anEntry;
+		            if (!isEmpty() && needAnEntry >= 0) {
                         bag[anEntry] = product;          
                         int newEntry = (entries-1);
                         bag[anEntry] = bag[newEntry];  
@@ -124,18 +125,46 @@
      
              public BagInterface<T> union(BagInterface<T> anotherBag) {
                  checkIntegrity();
-                BagInterface<T>secondBag = new ResizableArrayBag<T>();
-                T[]newArray = anotherBag.toArray();
-                BagInterface<T>tempBag = new ResizeableArrayBag(newArray);
+                BagInterface<T>newBag = new ResizableArrayBag<T>();
+                T[]newArray1 = this.toArray();
+                for (T contents : newArray1){  
+                    newBag.add(contents);
+                }
+                T[]newArray2 = this.toArray();
+                for (T contents:newArray2){  
+                    newBag.add(contents);
+                }
+                return newBag;
               }
              
              public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
                 checkIntegrity();
+                BagInterface<T>newBag = new ResizableArrayBag<T>();
+                T[]moving = anotherBag.toArray();
+                BagInterface<T>movingBag = new ResizableArrayBag<T>(moving);
+                T[]newArray = this.toArray();
+                for(T contents:newArray){
+                    if(movingBag.contains(contents)) {
+                        movingBag.remove(contents);
+                        newBag.add(contents);
+                    }
+                }
+                return newBag;
              }
          
              public BagInterface<T> difference(BagInterface<T> anotherBag) {
                 checkIntegrity();
-             }
-           
-         
+                ResizeableArrayBag<T> newBag = new ResizeableArrayBag<T>();
+                    for (int i = 0; entries > i; i++) {
+                        T contents = bag[i];
+                        if (!newBag.contains(contents)) {
+                            int diff = getFrequencyOf(contents);
+                                        anotherBag.getFrequencyOf(contents);
+                            for (int j = 0; j < diff; j++) {
+                                  newBag.add(contents);
+                            }
+                        } 
+                }
+                    return newBag;
+             } 
     }
