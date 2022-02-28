@@ -123,15 +123,18 @@
              }
      
              public BagInterface<T> union(BagInterface<T> anotherBag) {
-
+                 checkIntegrity();
+                BagInterface<T>secondBag = new ResizableArrayBag<T>();
+                T[]newArray = anotherBag.toArray();
+                BagInterface<T>tempBag = new ResizeableArrayBag(newArray);
               }
              
              public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
-
+                checkIntegrity();
              }
          
              public BagInterface<T> difference(BagInterface<T> anotherBag) {
-
+                checkIntegrity();
              }
            
          
