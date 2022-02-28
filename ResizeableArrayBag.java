@@ -12,40 +12,74 @@
          
              public ResizeableArrayBag() { 
                  this(DEFAULT_CAPACITY);
-                 
+
              }
              public ResizableArrayBag(int initialCapacity) {
                checkCapacity(initialCapacity);
                T[] tempBag = (T[])new Object[initialCapacity]; 
-                 bag = tempBag;
-                 entries = 0;
-                 integrityOk = true;
+                bag = tempBag;
+                entries = 0;
+                integrityOk = true;
 
              } 
              private void checkCapacity(int capacity) {
                 if (capacity > MAX_CAPACITY)
-               
-                throw new IllegalStateException("Tried to make a bag that's bigger than" + "the maximum of " + MAX_CAPACITY);
+                   throw new IllegalStateException("Tried to make a bag that's bigger than"+"the maximum of "+MAX_CAPACITY);
+
              } 
+             private void doubleCapacity()	{
+                int doubledLength = (bag.length*2);
+               
+                checkCapacity(doubledLength);
+                bag = Arrays.copyOf(bag, doubledLength);
+
+	          } 
              public void checkIntegrity() { 
                 if(!integrityOk)
                     throw new SecurityException ("ArrayBag Corrupt") ; 
+
              }
              public boolean add(T newEntry){
-                 checkIntegrity();
-
+                checkIntegrity();
+                if(!(entries>=bag.length)) {
+                    doubleCapacity();
+                }
+                bag[entries] = newEntry;
+                entries++;
+                
              }
              public int getCurrentSize(){
-                 return entries;
+                return entries;
              }
              public T remove(){
-                 if(!isEmpty()) {
+                if(!isEmpty()) {
                      return null;
                  }
-
+             }
+             private int getIndex(T anEntry) {
+                int index = 0;
+                int location = -1;
+                boolean found = false;
+               while (!found && (index < numberOfEntries)) {
+                     if ((anEntry == bag[index])) {
+                         location = index;
+                         return index;
+                         found = true;
+                     } 
+                         index++;
+               }
              }
              public boolean remove(T anEntry){
                  checkIntegrity();
+                    T product = null;
+		            if (!isEmpty() && anEntry >= 0) {
+                        bag[anEntry] = product;          
+                        int newEntry = (entries-1);
+                        bag[anEntry] = bag[newEntry];  
+                            bag[newEntry] = null;            
+                            entries--;
+		            }           
+                    return product;
 
              }
              public boolean isEmpty(){
@@ -55,17 +89,31 @@
              public void clear(){
                 bag[i] = null;
                 entries = 0;
+
              }
              public int getFrequencyOf(T anEntry){
-                 checkIntegrity();
-                 
+                checkIntegrity();
+                int counter = 0;
+                for(int i = 0; entries > i; i++) {
+                    if(bag[i].equals(anEntry)) {
+                        counter++;
+                    }
+                }
+                return counter;
+
              }
              public T[] toArray(){
-               
+                checkIntegrity();
+                T[] result = (T[])new Object[entries]; 
+                for (int index = 0; entries > index; index++) {
+                    result[index] = bag[index];
+                 } 
+                return result;
+
              }
              public boolean contains(T anEntry){
-                 checkIntegrity();
-               for (int i = 0; this.entries > i; i++ ) {
+                checkIntegrity();
+                for (int i = 0; this.entries > i; i++ ) {
                         if(entries == anEntry) {
                             return true;
                         }
@@ -73,21 +121,18 @@
                }
                 
              }
-             //Realized I could just paste the bottom, for sure im working on this saturday morning
-             public BagInterface<T> union(BagInterface<T> anotherBag){}
-             /** Will return a new Bag filled it with all of the elements that were found in both the calling Bag and the Bag passed as an argument. Finds all the elements that were found in both multisets.
-              * @param anotherBag The Bag that will be used to make an intersecton with the Bag that called this method
-              * @return Returns the intersection of the Bag that called the method and the Bag in the argument that was passed in the method call. 
-              */
-             public BagInterface<T> intersection(BagInterface<T> anotherBag){}
-             /** Will return a new Bag filled it with all of the elements that were exclusive to the Bag that is making the method call
-              * @param anotherBag The Bag used to pull all elements from the Bag making the method call that were contained in the argument Bag.
-              * @return The new Bag after the difference was taken
-              */
-             public BagInterface<T> difference(BagInterface<T> anotherBag){}
-             // generically this is saying any implementation of this interface will have an instance method that is going to take in as an argument of type BagInterface and then will return one of the same type
-         
-         }
-         
+     
+             public BagInterface<T> union(BagInterface<T> anotherBag) {
 
-        }
+              }
+             
+             public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
+
+             }
+         
+             public BagInterface<T> difference(BagInterface<T> anotherBag) {
+
+             }
+           
+         
+    }
