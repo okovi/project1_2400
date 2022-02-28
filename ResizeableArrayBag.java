@@ -5,28 +5,47 @@
         public final class ResizeableArrayBag<T> implements BagInterface<T> {
             private int entries;
             private T[] bag;
-            private static final int DEFAULT_CAPACITY = 1;
+            private static final int DEFAULT_CAPACITY = 5;
             private static final int MAX_CAPACITY = 500;
             private boolean integrityOk = false;
 
-             public ResizeableArrayBag() {
+         
+             public ResizeableArrayBag() { 
                  this(DEFAULT_CAPACITY);
+                 
              }
-             public ResizeableArrayBag(int entries){
-                 /* I'll ask about this tomorrow, I want to make a 
-                 empty bag with the capacity of the given entry
-                 */
+             public ResizableArrayBag(int initialCapacity) {
+               checkCapacity(initialCapacity);
+               T[] tempBag = (T[])new Object[initialCapacity]; 
+                 bag = tempBag;
+                 entries = 0;
+                 integrityOk = true;
+
+             } 
+             private void checkCapacity(int capacity) {
+                if (capacity > MAX_CAPACITY)
+               
+                throw new IllegalStateException("Tried to make a bag that's bigger than" + "the maximum of " + MAX_CAPACITY);
+             } 
+             public void checkIntegrity() { 
+                if(!integrityOk)
+                    throw new SecurityException ("ArrayBag Corrupt") ; 
              }
              public boolean add(T newEntry){
+                 checkIntegrity();
 
              }
              public int getCurrentSize(){
                  return entries;
              }
              public T remove(){
+                 if(!isEmpty()) {
+                     return null;
+                 }
 
              }
              public boolean remove(T anEntry){
+                 checkIntegrity();
 
              }
              public boolean isEmpty(){
@@ -38,10 +57,11 @@
                 entries = 0;
              }
              public int getFrequencyOf(T anEntry){
+                 checkIntegrity();
                  
              }
              public T[] toArray(){
-                 
+               
              }
              public boolean contains(T anEntry){
                  checkIntegrity();
