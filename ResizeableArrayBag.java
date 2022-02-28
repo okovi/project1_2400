@@ -1,12 +1,13 @@
 //Author @Jared
-//I am very tired today so I won't actually write my comments till sunday or so. Hopefully I just remember my line of thought when I come back to fix it up.
-//Note: It's 3am now and I'm dead tired. It took me all day to remember how to even set this stuff up. I can probably fix this mess in the morning. Most of my setup today was git rather than actually writing this
+//COMMENTS ADDED AFTER COMPLETION OF CODE
+//also realized I needed a way to check integrity for capacity oops
     import java.util.Arrays;
         public final class ResizeableArrayBag<T> implements BagInterface<T> {
             private int entries;
             private T[] bag;
             private static final int DEFAULT_CAPACITY = 1;
             private static final int MAX_CAPACITY = 500;
+            private boolean integrityOk = false;
 
              public ResizeableArrayBag() {
                  this(DEFAULT_CAPACITY);
@@ -30,10 +31,11 @@
              }
              public boolean isEmpty(){
                 return entries == 0;
-                //don't remember if it's = or == ask in the morning
+               
              }
              public void clear(){
-
+                bag[i] = null;
+                entries = 0;
              }
              public int getFrequencyOf(T anEntry){
                  
@@ -42,8 +44,13 @@
                  
              }
              public boolean contains(T anEntry){
-                //if an anEntry is being used can't we just return that if it's >= 0
-                return anEntry >= 0;
+                 checkIntegrity();
+               for (int i = 0; this.entries > i; i++ ) {
+                        if(entries == anEntry) {
+                            return true;
+                        }
+                        return false;
+               }
                 
              }
              //Realized I could just paste the bottom, for sure im working on this saturday morning
