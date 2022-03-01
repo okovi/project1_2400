@@ -13,6 +13,8 @@ public class BagDriver {
     public static void main(String[] args){
         BagInterface<Integer> Bag1 = new LinkedBag<>();
         BagInterface<Integer> Bag2 = new LinkedBag<>();
+        BagInterface<Integer> Bag1a = new ResizeableArrayBag<>();
+        BagInterface<Integer> Bag2a = new ResizeableArrayBag<>();
         int value;
         String test1Return;
         String test2Return;
@@ -28,8 +30,20 @@ public class BagDriver {
             } else value = i;
             Bag2.add(value);
         }
+        for (int i=0; i<20; i++) { // Initialize bag1
+            if(i%2==1) {
+                value = i+20;
+            } else value = i;
+            Bag1a.add(value);
+        }
+        for (int i=0; i<10; i++) { // Initialize bag2
+            if(i%2==0) {
+                value = i+25;
+            } else value = i;
+            Bag2a.add(value);
+        }
         LinkedBagTest<Integer> test1 = new LinkedBagTest<>(Bag1, Bag2);
-        LinkedBagTest<Integer> test2 = new LinkedBagTest<>(Bag1, Bag2); ////////////// Will be replaced with array
+        ArrayBagTest<Integer> test2 = new ArrayBagTest<>(Bag1, Bag2); ////////////// Will be replaced with array
         System.out.println("Bag1 contents:");
         System.out.println(test1.BagToString(1));
         System.out.println(test2.BagToString(1));
