@@ -1,8 +1,9 @@
 /**Author @Jared, with help from @Drake
 COMMENTS ADDED AFTER COMPLETION OF CODE
 also realized I needed a way to check integrity for capacity oops */
-    import java.util.Arrays;
-        public final class ResizableArrayBag<T> implements BagInterface<T> {
+package project1_2400;
+import java.util.Arrays;
+        public final class ResizeableArrayBag<T> implements BagInterface<T> {
             private int entries;
             private T[] bag;
             private static final int DEFAULT_CAPACITY = 5;
@@ -10,12 +11,12 @@ also realized I needed a way to check integrity for capacity oops */
             private boolean integrityOk = false;
 
 /** this is just the bag for default capacity */
-             public ResizableArrayBag() { 
+             public ResizeableArrayBag() { 
                  this(DEFAULT_CAPACITY);
 
              }
 /**this is a bag for an initial capacity*/
-             public ResizableArrayBag(int initialCapacity) {
+             public ResizeableArrayBag(int initialCapacity) {
                checkCapacity(initialCapacity);
                @SuppressWarnings("unchecked") //Eclipse said to do this 
 			T[] tempBag = (T[])new Object[initialCapacity]; 
@@ -43,7 +44,7 @@ also realized I needed a way to check integrity for capacity oops */
 
              }
 /** */
-             public ResizableArrayBag(T[] contents) {
+             public ResizeableArrayBag(T[] contents) {
                 checkCapacity(contents.length);
                 bag = Arrays.copyOf(contents, contents.length);
                 entries = contents.length;
@@ -153,7 +154,7 @@ also realized I needed a way to check integrity for capacity oops */
 /** */     
              public BagInterface<T> union(BagInterface<T> anotherBag) {
                  checkIntegrity();
-                BagInterface<T>newBag = new ResizableArrayBag<T>();
+                BagInterface<T>newBag = new ResizeableArrayBag<T>();
                 T[]newArray1 = this.toArray();
                 for (T contents : newArray1){  
                     newBag.add(contents);
@@ -167,9 +168,9 @@ also realized I needed a way to check integrity for capacity oops */
 /**     */        
              public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
                 checkIntegrity();
-                BagInterface<T>newBag = new ResizableArrayBag<T>();
+                BagInterface<T>newBag = new ResizeableArrayBag<T>();
                 T[] temporaryArray = anotherBag.toArray();
-                BagInterface<T>movingBag = new ResizableArrayBag<T>(temporaryArray);
+                BagInterface<T>movingBag = new ResizeableArrayBag<T>(temporaryArray);
                 T[]newArray = this.toArray();
                 for(T contents:newArray){
                     if(movingBag.contains(contents)) {
@@ -182,7 +183,7 @@ also realized I needed a way to check integrity for capacity oops */
 /**    */
              public BagInterface<T> difference(BagInterface<T> anotherBag) {
                 checkIntegrity();
-                ResizableArrayBag<T> newBag = new ResizableArrayBag<T>();
+                ResizeableArrayBag<T> newBag = new ResizeableArrayBag<T>();
                     for (int i = 0; entries > i; i++) {
                         T contents = bag[i];
                         if (!newBag.contains(contents)) {
