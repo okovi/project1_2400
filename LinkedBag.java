@@ -3,7 +3,6 @@
  */
 package project1_2400;
 public class LinkedBag<T> implements BagInterface<T> { 
-    private final LinkedBag<T> baglinked; 
     private Node<T> firstNode; // addition of tail node
     private int numberofEntries=0;
     private boolean integrityOK=false; 
@@ -11,7 +10,6 @@ public class LinkedBag<T> implements BagInterface<T> {
     LinkedBag() { 
         integrityOK=true;
         firstNode=null;
-        baglinked=this;
     }
     class Node<T> { 
         private T  data; 
@@ -54,6 +52,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         return false;
     }
     /** Checks that the head node had a data field equivalent to the argument that was passed. */
+    @SuppressWarnings("unchecked")
     public boolean add(T newEntry){
         checkIntegrity();
         firstNode = new Node(newEntry,firstNode); // constructor takes care of adding to first 
@@ -66,6 +65,7 @@ public class LinkedBag<T> implements BagInterface<T> {
  * Removes and returns the first element in the linkedbag. 
  * @return
  */
+    @SuppressWarnings("unchecked")
     public T remove(){ 
         checkIntegrity();
         if(isEmpty() || firstNode==null) // empty or bad call cases
@@ -84,6 +84,7 @@ public class LinkedBag<T> implements BagInterface<T> {
     /** Iterates through the LinkedBag, stops when element is found and removed or until whole
      *  bag was intererated through
      * @return True if element is found and removed, otherwise false. */
+    @SuppressWarnings("unchecked")
     public boolean remove(T anEntry) {
         checkIntegrity();
         Node<T> current=firstNode; // using two pointers to go through linked bag 
@@ -124,6 +125,7 @@ public class LinkedBag<T> implements BagInterface<T> {
     /** Iterates through the LinkedBag and records the anount of times an element was found inside of it. 
      * @param anEntry This is the target element we are looking for occurances of.
      * @return Returns the number of occurances of an element within a LinkedBag. */
+    @SuppressWarnings("unchecked")
     public int getFrequencyOf(T anEntry){
         checkIntegrity();
         Node<T> current=firstNode;
@@ -136,6 +138,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         return count;
     }
     /** Loops through the LinkedBag until the first instance of the entry is found or until the last element with a next pointer to null. */
+    @SuppressWarnings("unchecked")
     public boolean contains(T anEntry) { 
         checkIntegrity();
         Node<T> current=firstNode;
@@ -147,17 +150,16 @@ public class LinkedBag<T> implements BagInterface<T> {
         return false;
     } 
     /** Loops through the LinkedBag and copies over the values into a fixed-size array. */
+    @SuppressWarnings("unchecked")
     public T[] toArray() {
         checkIntegrity();
         Node<T> current=firstNode;
-        @SuppressWarnings ("unchecked")
         T[] LinkBagArray= (T[]) new Object[numberofEntries];
         for(int i=0;i<numberofEntries; i++) { 
             LinkBagArray[i]= current.data;
             current=current.next;
         }
         return LinkBagArray;
-
     }
     /** Will get an Array of each LinkedBag, then loop through each array to add every element into the new LinkedBag.
      * @param anotherBag The parameter for the LinkedBag that will get passed as an argument when other LinkedBag makes the method call. 
@@ -181,30 +183,8 @@ public class LinkedBag<T> implements BagInterface<T> {
      * @param anotherBag
      * @return
      */
+    @SuppressWarnings("unchecked")
     public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
-        /*
-        //anotherBag.checkIntegrity();
-        BagInterface<T> duplicateBag = new LinkedBag<>(); // add duplicate to bag and test against so we can use getFrequency of freely
-        BagInterface<T> intersectionBag = new LinkedBag<>();
-        if (this.isEmpty() || this==null) // explicit handle of empty and null cases 
-            return intersectionBag;
-        Node<T> current1=this.firstNode;
-        // use larger bag as stopping condition for loop  
-        int numOfElem=(this.numberofEntries<anotherBag.getCurrentSize()) ? (this.numberofEntries):(anotherBag.getCurrentSize()); 
-        for (int i=0;i<numOfElem-1;i++) {
-            if (!duplicateBag.contains(current1.data)) { 
-                int freqA=anotherBag.getFrequencyOf(current1.data);// check if element is in other bag 
-                int freqB=this.getFrequencyOf(current1.data); 
-                int intersect = (freqA>freqB)? (freqB) : (freqA); // pick lower frequency 
-                for (int j=0; j<intersect-1;j++) // add in a loop
-                    intersectionBag.add(current1.data);
-                duplicateBag.add(current1.data);
-            }
-            current1=current1.next;
-        }
-        return intersectionBag;
-        */
-        checkIntegrity();
         checkIntegrity();
         BagInterface<T> intersectionBag = new LinkedBag<>();
         BagInterface<T> duplicateBag = new LinkedBag<>();
@@ -226,28 +206,8 @@ public class LinkedBag<T> implements BagInterface<T> {
         }
         return intersectionBag;
     }
+    @SuppressWarnings("unchecked")
     public BagInterface<T> difference(BagInterface<T> anotherBag){
-        /*
-        checkIntegrity();
-        BagInterface<T> differenceBag = new LinkedBag<>();
-        BagInterface<T> duplicateBag = new LinkedBag<>();
-        if (this.isEmpty() || this==null) // explicit handle of empty and null cases 
-            return differenceBag;
-        Node<T> current1=this.firstNode;
-        for (int i=0; i<this.numberofEntries-1;i++) { // unique elem for calling bag, stopping condition is anchored by calling bag
-            int freqA=anotherBag.getFrequencyOf(current1.data);
-            int freqB=this.getFrequencyOf(current1.data);
-            if (!duplicateBag.contains(current1.data)&& freqB>freqA) {
-                int instances= freqB-freqA; 
-                for(int j=0; j<instances-1;j++) 
-                    differenceBag.add(current1.data);
-                duplicateBag.add(current1.data); 
-            }
-            current1=current1.next; 
-        }
-        return differenceBag;
-        */
-        
         checkIntegrity();
         BagInterface<T> differenceBag = new LinkedBag<>();
         BagInterface<T> duplicateBag = new LinkedBag<>();
