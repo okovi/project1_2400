@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-i.)
-Francisco Serrano
-Drake Fafard
-Jared Escarcega
-ii.)
-iii.)
-iv.)
-v.)
-=======
 # project1_2400  
 i.) Francisco Serrano, Drake Fafard, Jared Escarcega   
 iI.) Contributions:  
@@ -17,4 +7,4 @@ iI.) Contributions:
 iii.)  No extra features were implemented
 iv.)<insert video link here> 
 v.) <insert excel sheet here> 
->>>>>>> e7f62215eacdd703a0b9d827a359c0ae878b0239
+
