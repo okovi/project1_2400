@@ -57,6 +57,5 @@ public interface BagInterface<T> {
      * @return The new Bag after the difference was taken
      */
     public BagInterface<T> difference(BagInterface<T> anotherBag);
-    // generically this is saying any implementation of this interface will have an instance method that is going to take in as an argument of type BagInterface and then will return one of the same type
 
 }
