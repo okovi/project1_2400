@@ -1,9 +1,10 @@
 /**
  * @author Francisco Serrano 
  */
+package project1_2400;
 public class LinkedBag<T> implements BagInterface<T> { 
     private final LinkedBag<T> baglinked; 
-    private Node<T> firstNode; 
+    private Node<T> firstNode; // addition of tail node
     private int numberofEntries=0;
     private boolean integrityOK=false; 
 
@@ -18,7 +19,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         /** Creates a node with element and next Node to point to. Increments numofEntries, next pointer for firstNode will reference itself,then we move firstNode pointer to the Node we just created.
          * @param data The element that is being stored in the node
          * @param next The next Node that it will point to in the chain */
-        Node(T data , Node next) {
+        Node(T data, Node next) {
             this.data=data;
             this.next=next; // new element points to head 
             numberofEntries++;
@@ -38,6 +39,7 @@ public class LinkedBag<T> implements BagInterface<T> {
     public void checkIntegrity() { 
         if(!integrityOK)
             throw new SecurityException ("LinkedBag is corrupt") ; 
+        
     }
     /** Number of nodes are in the LinkedBag. */
     public int getCurrentSize(){ 
@@ -54,8 +56,7 @@ public class LinkedBag<T> implements BagInterface<T> {
     /** Checks that the head node had a data field equivalent to the argument that was passed. */
     public boolean add(T newEntry){
         checkIntegrity();
-        Node<T> entry= Node(newEntry,firstNode); // constructor takes care of adding to first
-        firstNode=entry;
+        firstNode = new Node(newEntry,firstNode); // constructor takes care of adding to first 
         if (newEntry==firstNode.data)
             return true; 
         else 
@@ -95,13 +96,16 @@ public class LinkedBag<T> implements BagInterface<T> {
                 found=true;
                 if(current.next==null && numberofEntries>1) {  // last element case
                     previous.next=null;
-                    return found;
+                } else if(current.next==null && numberofEntries==1) { // only element case
+                    firstNode=null;
+                } else { // current.next is not null and number of entries is above 1
+                    if (current!=firstNode) { // Where current is not the first node
+                        previous.next=current.next;
+                    }
+                    else {
+                        firstNode=current.next; // When current is first, the next one will be first
+                    }
                 }
-                if(current.next==null && numberofEntries==1) { // only element case
-                    current=previous;
-                    return found;
-                }
-                previous.next=current.next;
                 numberofEntries--; 
                 return found;
             }
@@ -148,7 +152,7 @@ public class LinkedBag<T> implements BagInterface<T> {
         Node<T> current=firstNode;
         @SuppressWarnings ("unchecked")
         T[] LinkBagArray= (T[]) new Object[numberofEntries];
-        for(int i=0;i<numberofEntries-1; i++) { 
+        for(int i=0;i<numberofEntries; i++) { 
             LinkBagArray[i]= current.data;
             current=current.next;
         }
@@ -160,11 +164,10 @@ public class LinkedBag<T> implements BagInterface<T> {
      * @return Returns a new LinkedBag with all elements in either the LinkedBag making the method call or the LinkedBag that gets passed as an argument. 
      */
     // think I can get around the for
-    @Override
     public BagInterface<T> union(BagInterface<T> anotherBag) {
         checkIntegrity();
-        anotherBag.checkIntegrity();
-        LinkedBag<T> unionBag = new LinkedBag();
+        //anotherBag.checkIntegrity();
+        BagInterface<T> unionBag = new LinkedBag<>();
         T[] bag1= this.toArray();
         T[] bag2= anotherBag.toArray();
         for(T elementA: bag1) 
@@ -178,17 +181,16 @@ public class LinkedBag<T> implements BagInterface<T> {
      * @param anotherBag
      * @return
      */
-    @Override
     public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
-        checkIntegrity();
-        anotherBag.checkIntegrity();
-        LinkedBag<T> duplicateBag = new LinkedBag(); // add duplicate to bag and test against so we can use getFrequency of freely
-        LinkedBag<T> intersectionBag = new LinkedBag();
+        /*
+        //anotherBag.checkIntegrity();
+        BagInterface<T> duplicateBag = new LinkedBag<>(); // add duplicate to bag and test against so we can use getFrequency of freely
+        BagInterface<T> intersectionBag = new LinkedBag<>();
         if (this.isEmpty() || this==null) // explicit handle of empty and null cases 
             return intersectionBag;
         Node<T> current1=this.firstNode;
         // use larger bag as stopping condition for loop  
-        int numOfElem=(this.numberofEntries<anotherBag.numberofEntries) ? (this.numberofEntries):(anotherBag.numberofEntries); 
+        int numOfElem=(this.numberofEntries<anotherBag.getCurrentSize()) ? (this.numberofEntries):(anotherBag.getCurrentSize()); 
         for (int i=0;i<numOfElem-1;i++) {
             if (!duplicateBag.contains(current1.data)) { 
                 int freqA=anotherBag.getFrequencyOf(current1.data);// check if element is in other bag 
@@ -201,12 +203,34 @@ public class LinkedBag<T> implements BagInterface<T> {
             current1=current1.next;
         }
         return intersectionBag;
-    }
-    @Override
-    public BagInterface<T> difference(BagInterface<T> anotherBag){
+        */
         checkIntegrity();
-        LinkedBag<T> differenceBag = new LinkedBag();
-        LinkedBag<T> duplicateBag = new LinkedBag();
+        checkIntegrity();
+        BagInterface<T> intersectionBag = new LinkedBag<>();
+        BagInterface<T> duplicateBag = new LinkedBag<>();
+        Object bagArray2[] = anotherBag.toArray();
+        T element;
+        for(int i=0; i<anotherBag.getCurrentSize(); i++) {
+            element = (T)bagArray2[i];
+            duplicateBag.add(element);
+        }
+        if (this.isEmpty() || this==null) // explicit handle of empty and null cases 
+            return intersectionBag;
+        Node<T> currentNodeB1=this.firstNode;
+        for(int i=0; i<numberofEntries; i++) {
+            if (duplicateBag.contains(currentNodeB1.data)) {
+                duplicateBag.remove(currentNodeB1.data);
+                intersectionBag.add(currentNodeB1.data);
+            }
+            currentNodeB1 = currentNodeB1.next;
+        }
+        return intersectionBag;
+    }
+    public BagInterface<T> difference(BagInterface<T> anotherBag){
+        /*
+        checkIntegrity();
+        BagInterface<T> differenceBag = new LinkedBag<>();
+        BagInterface<T> duplicateBag = new LinkedBag<>();
         if (this.isEmpty() || this==null) // explicit handle of empty and null cases 
             return differenceBag;
         Node<T> current1=this.firstNode;
@@ -222,20 +246,26 @@ public class LinkedBag<T> implements BagInterface<T> {
             current1=current1.next; 
         }
         return differenceBag;
-    
-    
-    
+        */
+        
+        checkIntegrity();
+        BagInterface<T> differenceBag = new LinkedBag<>();
+        BagInterface<T> duplicateBag = new LinkedBag<>();
+        Object bagArray2[] = anotherBag.toArray();
+        T element;
+        for(int i=0; i<anotherBag.getCurrentSize(); i++) {
+            element = (T)bagArray2[i];
+            duplicateBag.add(element);
+        }
+        if (this.isEmpty() || this==null) // explicit handle of empty and null cases 
+            return differenceBag;
+        Node<T> currentNodeB1=this.firstNode;
+        for(int i=0; i<numberofEntries; i++) {
+            if (duplicateBag.contains(currentNodeB1.data)) {
+                duplicateBag.remove(currentNodeB1.data);
+            } else differenceBag.add(currentNodeB1.data);
+            currentNodeB1 = currentNodeB1.next;
+        }
+        return differenceBag;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     }
-    
-    
-    

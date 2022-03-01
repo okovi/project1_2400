@@ -1,3 +1,5 @@
+package project1_2400;
+
 
 public interface BagInterface<T> { 
     /** Finds the number of elements in the instance of the implementation of the BagInterface that makes this call. 
