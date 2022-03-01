@@ -1,6 +1,10 @@
 /**
  * @author Francisco Serrano, debugging/rewritten methods by Drake Fafard
  */
+<<<<<<< HEAD
+=======
+package project1_2400;
+>>>>>>> e7f62215eacdd703a0b9d827a359c0ae878b0239
 public class LinkedBag<T> implements BagInterface<T> { 
 	private Node<T> firstNode;
     private int numberofEntries=0;
