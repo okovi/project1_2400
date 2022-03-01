@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
- *
- * @author Drake (Edited for ResizableArrayBag)
- */
+//
+ //*
+// * @author Drake (Edited for ResizableArrayBag)
+ 
 public class ArrayBagTest<T> {
     public static void main(String[] args){
         BagInterface<Integer> Bag1 = new ResizableArrayBag();

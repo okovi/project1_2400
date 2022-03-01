@@ -1,6 +1,6 @@
-//Author @Jared, with help from @Drake
-//COMMENTS ADDED AFTER COMPLETION OF CODE
-//also realized I needed a way to check integrity for capacity oops
+/**Author @Jared, with help from @Drake
+COMMENTS ADDED AFTER COMPLETION OF CODE
+also realized I needed a way to check integrity for capacity oops */
     import java.util.Arrays;
         public final class ResizableArrayBag<T> implements BagInterface<T> {
             private int entries;
@@ -9,11 +9,12 @@
             private static final int MAX_CAPACITY = 500;
             private boolean integrityOk = false;
 
-         
+/** this is just the bag for default capacity */
              public ResizableArrayBag() { 
                  this(DEFAULT_CAPACITY);
 
              }
+/**this is a bag for an initial capacity*/
              public ResizableArrayBag(int initialCapacity) {
                checkCapacity(initialCapacity);
                @SuppressWarnings("unchecked") //Eclipse said to do this 
@@ -23,40 +24,55 @@
                 integrityOk = true;
 
              } 
+/** */
              private void checkCapacity(int capacity) {
                 if (capacity > MAX_CAPACITY)
-                   throw new IllegalStateException("Tried to make a bag that's bigger than"+"the maximum of "+MAX_CAPACITY);
+                   throw new IllegalStateException("Tried to make a bag that's bigger than the maximum of "+MAX_CAPACITY);
 
              } 
-             private void doubleCapacity()	{
-                int doubledLength = (bag.length*2);
-               
-                checkCapacity(doubledLength);
-                bag = Arrays.copyOf(bag, doubledLength);
-
-	          } 
+/** */
+             private void doubleCapacity() {
+               int doubleLength = 2 * bag.length;
+               checkCapacity(doubleLength);
+               bag = Arrays.copyOf(bag, doubleLength);
+         	}
+/**/
              public void checkIntegrity() { 
                 if(!integrityOk)
                     throw new SecurityException ("ArrayBag Corrupt") ; 
 
              }
-             public boolean add(T newEntry){
-                checkIntegrity();
-                if(!(entries>=bag.length)) {
-                    doubleCapacity();
-                }
-                bag[entries] = newEntry;
-                entries++;
-                return true;
+/** */
+             public ResizableArrayBag(T[] contents) {
+                checkCapacity(contents.length);
+                bag = Arrays.copyOf(contents, contents.length);
+                entries = contents.length;
+                integrityOk = true;
              }
+/** */
+                private boolean isArrayFull() {
+         	 return entries >= bag.length;
+         	} 
+/** */
+             public boolean add(T newEntry){
+         		checkIntegrity();
+               if (isArrayFull()) {
+                  doubleCapacity();
+               } 
+               bag[entries] = newEntry;
+               entries++;
+               return true;
+         	} 
+/** */
              public int getCurrentSize(){
                 return entries;
              }
-             public T remove(){
+/** */
+             public T remove() {
                 T test = removing(entries-1);
                 return test;
-                 }
-
+             }
+/** */
              private int getIndex(T anEntry) {
                 int index = 0;
                 int location = -1;
@@ -70,20 +86,21 @@
                }
                return location;
              }
+ /** */
              //Was originally public boolean remove but I messed up and realized im supposed to be doing a private entry removal for remove
-             private T removing(int anIndex){
-                 checkIntegrity();
-                    T product = null;
-		            if (!isEmpty() && anIndex >= 0) {
-                        bag[anIndex] = product;          
-                        int newEntry = (entries-1);
-                        bag[anIndex] = bag[newEntry];  
-                            bag[newEntry] = null;            
-                            entries--;
-		            }           
-                    return product;
-
-             }
+             private T removing(int Index)
+         	{
+         		T product = null;
+         		if (!isEmpty() && (Index >= 0)) {
+                  product = bag[Index];         
+                  int nullindex = entries - 1;
+                  bag[Index] = bag[nullindex]; 
+                  bag[nullindex] = null;           
+                  entries--;
+         		}    
+               return product;
+         	} 
+/** */            
              public boolean remove(T anEntry) {
 
                  int index = getIndex(anEntry);
@@ -93,16 +110,19 @@
                  return anEntry.equals(result);
 
            }
+/** */             
              public boolean isEmpty(){
                 return entries == 0;
                
              }
+/** */            
              public void clear(){
                if (!(entries == 0));
                 entries = 0;
                 remove();
 
              }
+/** */
              public int getFrequencyOf(T anEntry){
                 checkIntegrity();
                 int counter = 0;
@@ -114,6 +134,7 @@
                 return counter;
 
              }
+/** */
              public T[] toArray(){
                 checkIntegrity();
                 @SuppressWarnings("unchecked")//Eclipse said to do this not sure what it does yet
@@ -124,11 +145,12 @@
                 return result;
 
              }
+/** */
              public boolean contains(T anEntry){
                 checkIntegrity();
                 return getIndex(anEntry) >= 0;
              }
-     
+/** */     
              public BagInterface<T> union(BagInterface<T> anotherBag) {
                  checkIntegrity();
                 BagInterface<T>newBag = new ResizableArrayBag<T>();
@@ -136,17 +158,18 @@
                 for (T contents : newArray1){  
                     newBag.add(contents);
                 }
-                T[]newArray2 = this.toArray();
+                T[]newArray2 = anotherBag.toArray();
                 for (T contents:newArray2){  
                     newBag.add(contents);
                 }
                 return newBag;
               }
-             
+/**     */        
              public BagInterface<T> intersection(BagInterface<T> anotherBag) { 
                 checkIntegrity();
                 BagInterface<T>newBag = new ResizableArrayBag<T>();
-                BagInterface<T>movingBag = new ResizableArrayBag<T>();
+                T[] temporaryArray = anotherBag.toArray();
+                BagInterface<T>movingBag = new ResizableArrayBag<T>(temporaryArray);
                 T[]newArray = this.toArray();
                 for(T contents:newArray){
                     if(movingBag.contains(contents)) {
@@ -156,15 +179,14 @@
                 }
                 return newBag;
              }
-         
+/**    */
              public BagInterface<T> difference(BagInterface<T> anotherBag) {
                 checkIntegrity();
                 ResizableArrayBag<T> newBag = new ResizableArrayBag<T>();
                     for (int i = 0; entries > i; i++) {
                         T contents = bag[i];
                         if (!newBag.contains(contents)) {
-                            int diff = getFrequencyOf(contents);
-                                        anotherBag.getFrequencyOf(contents);
+                            int diff = getFrequencyOf(contents)- anotherBag.getFrequencyOf(contents);
                             for (int j = 0; j < diff; j++) {
                                   newBag.add(contents);
                             }
@@ -172,5 +194,6 @@
                 }
                     return newBag;
              } 
+           
     }
-        
+
